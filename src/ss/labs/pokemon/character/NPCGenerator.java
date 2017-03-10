@@ -45,6 +45,15 @@ public class NPCGenerator {
         PokemonData bluePokemon=new PokemonData(65,"Alakazam","Psychic","Confusion",100,100,20,30);
         PokemonTrainer trainerBlueOak=new PokemonTrainer("Blue Oak","Pokemon Trainer","Let's Check out our Pokemon! Come on,I'll take you on!",bluePokemon,30);
         npcTemplates.add(trainerBlueOak);
+
+        //Gym leader
+        ArrayList<PokemonData> jasmineList=new ArrayList<PokemonData>();
+        PokemonData jasminePokemonOne=new PokemonData(81,"Magnemite","Electric/Steel","Thunder Wave",120,120,30,40);
+        jasmineList.add(jasminePokemonOne);
+        PokemonData jasminePokemonTwo=new PokemonData(208,"Steelix","Steel/Ground","Iron Tail",130,130,20,50);
+        jasmineList.add(jasminePokemonTwo);
+        PokemonGymLeader leaderJasmine=new PokemonGymLeader("Jasmine","Gym Leader","Um...Hello. Shall we start?",jasmineList,"Olivine",0);
+        npcTemplates.add(leaderJasmine);
     }
 
     //Try ctrl-N or command-N, click on Getter, you will see something useful

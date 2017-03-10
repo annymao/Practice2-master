@@ -2,6 +2,7 @@ package ss.labs.pokemon;
 
 import ss.labs.pokemon.character.NPC;
 import ss.labs.pokemon.character.NPCGenerator;
+import ss.labs.pokemon.character.PokemonGymLeader;
 import ss.labs.pokemon.character.PokemonTrainer;
 
 import java.util.ArrayList;
@@ -147,6 +148,116 @@ public class Main {
                         }
                     }
                 }
+                else if(npc.getJob().equals("Gym Leader"))
+                {
+                    npc.interact();
+                    scanner.nextLine();
+                    PokemonGymLeader component=(PokemonGymLeader) npc;
+                    PokemonData poke=component.getPokemonData();
+                    if(component.getVisited()==0)
+                    {
+                        System.out.println("The Battle Start!");
+                        System.out.println(component.getName()+": GO! "+poke.getName()+"!");
+                        while (morrisPokemon.getCurrentHP() > 0 && poke.getCurrentHP() > 0)
+                        {
+                            if (morrisPokemon.getSpeed() >= poke.getSpeed())
+                            {
+                                System.out.printf("%s use %s\n", morrisPokemon.getName(), morrisPokemon.getMove());
+                                poke.damage(morrisPokemon.getAttack());
+                                System.out.printf("%s receive %d damage\n", poke.getName(), morrisPokemon.getAttack());
+                                if (poke.getCurrentHP() > 0)
+                                {
+                                    System.out.printf("%s has %d HP left.\n", poke.getName(), poke.getCurrentHP());
+                                }
+                                else
+                                {
+                                    System.out.printf("%s fainted.\n", poke.getName());
+                                    component.giveBadge();
+                                    morris.putBadges(component.getBadge());
+                                    System.out.println(morris.getName() + ": Thank you!");
+                                    component.getVisited(1);
+                                    morrisPokemon.attackUp();
+                                    morrisPokemon.speedUp();
+                                    poke.healing();
+                                    scanner.nextLine();
+                                    break;
+                                }
+                                scanner.nextLine();
+                                System.out.printf("%s use %s\n", poke.getName(), poke.getMove());
+                                morrisPokemon.damage(poke.getAttack());
+                                System.out.printf("%s receive %d damage\n", morrisPokemon.getName(), poke.getAttack());
+                                if (morrisPokemon.getCurrentHP() > 0)
+                                {
+                                    System.out.printf("%s has %d HP left.\n", morrisPokemon.getName(), morrisPokemon.getCurrentHP());
+                                    scanner.nextLine();
+                                }
+                                else
+                                {
+                                    System.out.printf("%s fainted.\n", morrisPokemon.getName());
+                                    System.out.println("You lose the battle.");
+                                    component.win();
+                                    poke.healing();
+                                    scanner.nextLine();
+
+                                    System.out.println("Go to pokemon center...\nYou meet Joy, who is a nurse.");
+                                    System.out.println("Joy: Do you need some help?");
+                                    morrisPokemon.healing();
+                                    System.out.println("Joy: Your pokemon is full of HP! Here you go!");
+                                    scanner.nextLine();
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                System.out.printf("%s use %s\n", poke.getName(), poke.getMove());
+                                morrisPokemon.damage(poke.getAttack());
+                                System.out.printf("%s receive %d damage\n", morrisPokemon.getName(), poke.getAttack());
+                                if (morrisPokemon.getCurrentHP() > 0)
+                                {
+                                    System.out.printf("%s has %d HP left.\n", morrisPokemon.getName(), morrisPokemon.getCurrentHP());
+
+                                }
+                                else
+                                {
+                                    System.out.printf("%s fainted.\n", morrisPokemon.getName());
+                                    System.out.println("You lose the battle.");
+                                    component.win();
+                                    poke.healing();
+                                    scanner.nextLine();
+
+                                    System.out.println("Go to pokemon center...\nYou meet Joy, who is a nurse.");
+                                    System.out.println("Joy: Do you need some help?");
+                                    morrisPokemon.healing();
+                                    System.out.println("Joy: Your pokemon is full of HP! Here you go!");
+                                    scanner.nextLine();
+                                    break;
+                                }
+                                scanner.nextLine();
+                                System.out.printf("%s use %s\n", morrisPokemon.getName(), morrisPokemon.getMove());
+                                poke.damage(morrisPokemon.getAttack());
+                                System.out.printf("%s receive %d damage\n", poke.getName(), morrisPokemon.getAttack());
+                                if (poke.getCurrentHP() > 0)
+                                {
+                                    System.out.printf("%s has %d HP left.\n", poke.getName(), poke.getCurrentHP());
+                                    scanner.nextLine();
+                                }
+                                else
+                                {
+                                    System.out.printf("%s fainted.\n", poke.getName());
+                                    component.giveBadge();
+                                    morris.putBadges(component.getBadge());
+                                    System.out.println(morris.getName() + ": Thank you!");
+                                    component.getVisited(1);
+                                    morrisPokemon.attackUp();
+                                    morrisPokemon.speedUp();
+                                    poke.healing();
+                                    scanner.nextLine();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
                 else if(npc.getJob().equals("Villager"))
                 {
                     npc.interact();
@@ -191,6 +302,11 @@ public class Main {
                 scanner.nextLine();
             }
         }
-        System.out.printf("The money you have: $%d",morris.getMoney());
+        System.out.printf("The money you have: $%d\n",morris.getMoney());
+        System.out.println("The badges you get:");
+        for(String badge: morris.getBadges())
+        {
+            System.out.println(badge);
+        }
     }
 }
