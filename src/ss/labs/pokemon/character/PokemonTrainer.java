@@ -31,39 +31,39 @@ public class PokemonTrainer extends NPC{
         this.money=money;
         badges=new ArrayList<String>();
     }
-    @Override
-    public void speak(PokemonTrainer trainer)
+    public int battle(PokemonTrainer trainer)
     {
-
+        int win=0;
         Scanner scanner=new Scanner(System.in);
-        super.speak(trainer);
+        System.out.println(name+": "+quote);
+        scanner.nextLine();
         System.out.println("The Battle Start!");
-        while(trainer.getPokemonData().getCurrentHP()>0 && pokemonData.getCurrentHP()>0)
+		PokemonData poke=getPokemonData();
+        System.out.println(getName()+": GO! "+poke.getName()+"!");
+        while(trainer.getPokemonData().getCurrentHP()>0 && poke.getCurrentHP()>0)
         {
-            if(trainer.getPokemonData().getSpeed()>=pokemonData.getSpeed())
+            if(trainer.getPokemonData().getSpeed()>=poke.getSpeed())
             {
                 System.out.printf("%s use %s\n",trainer.getPokemonData().getName(),trainer.getPokemonData().getMove());
-                pokemonData.damage(trainer.getPokemonData().getAttack());
-                System.out.printf("%s receive %d damage\n",pokemonData.getName(),trainer.getPokemonData().getAttack());
-                if(pokemonData.getCurrentHP()>0)
+                poke.damage(trainer.getPokemonData().getAttack());
+                System.out.printf("%s receive %d damage\n",poke.getName(),trainer.getPokemonData().getAttack());
+                if(poke.getCurrentHP()>0)
                 {
-                    System.out.printf("%s has %d HP left.\n", pokemonData.getName(), pokemonData.getCurrentHP());
+                    System.out.printf("%s has %d HP left.\n", poke.getName(), poke.getCurrentHP());
                 }
                 else
                 {
-                    System.out.printf("%s fainted.\n",pokemonData.getName());
-                    System.out.printf("You win the battle, and you get %d dollars from %s\n",getMoney(),getName());
-                    trainer.getMoney(getMoney());
+                    System.out.printf("%s fainted.\n",poke.getName());
                     trainer.getPokemonData().attackUp();
                     trainer.getPokemonData().speedUp();
-                    pokemonData.healing();
-                    scanner.nextLine();
+                    poke.healing();
+                    win=1;
                     break;
                 }
                 scanner.nextLine();
-                System.out.printf("%s use %s\n",pokemonData.getName(),pokemonData.getMove());
-                trainer.getPokemonData().damage(pokemonData.getAttack());
-                System.out.printf("%s receive %d damage\n",trainer.getPokemonData().getName(),pokemonData.getAttack());
+                System.out.printf("%s use %s\n",poke.getName(),poke.getMove());
+                trainer.getPokemonData().damage(poke.getAttack());
+                System.out.printf("%s receive %d damage\n",trainer.getPokemonData().getName(),poke.getAttack());
                 if(trainer.getPokemonData().getCurrentHP()>0)
                 {
                     System.out.printf("%s has %d HP left.\n", trainer.getPokemonData().getName(), trainer.getPokemonData().getCurrentHP());
@@ -72,24 +72,16 @@ public class PokemonTrainer extends NPC{
                 else
                 {
                     System.out.printf("%s fainted.\n",trainer.getPokemonData().getName());
-                    System.out.println("You lose the battle, and all your money as well.");
-                    trainer.lose();
-                    pokemonData.healing();
-                    scanner.nextLine();
-
-                    System.out.println("Go to pokemon center...\nYou meet Joy, who is a nurse.");
-                    System.out.println("Joy: Do you need some help?");
-                    trainer.getPokemonData().healing();
-                    System.out.println("Joy: Your pokemon is full of HP! Here you go!");
-                    scanner.nextLine();
+                    poke.healing();
+                    win=0;
                     break;
                 }
             }
             else
             {
-                System.out.printf("%s use %s\n",pokemonData.getName(),pokemonData.getMove());
-                trainer.getPokemonData().damage(pokemonData.getAttack());
-                System.out.printf("%s receive %d damage\n",trainer.getPokemonData().getName(),pokemonData.getAttack());
+                System.out.printf("%s use %s\n",poke.getName(),poke.getMove());
+                trainer.getPokemonData().damage(poke.getAttack());
+                System.out.printf("%s receive %d damage\n",trainer.getPokemonData().getName(),poke.getAttack());
                 if(trainer.getPokemonData().getCurrentHP()>0)
                 {
                     System.out.printf("%s has %d HP left.\n", trainer.getPokemonData().getName(), trainer.getPokemonData().getCurrentHP());
@@ -98,40 +90,55 @@ public class PokemonTrainer extends NPC{
                 else
                 {
                     System.out.printf("%s fainted.\n",trainer.getPokemonData().getName());
-                    System.out.println("You lose the battle, and all your money as well.");
-                    trainer.lose();
-                    pokemonData.healing();
-                    scanner.nextLine();
-
-                    System.out.println("Go to pokemon center...\nYou meet Joy, who is a nurse.");
-                    System.out.println("Joy: Do you need some help?");
-                    trainer.getPokemonData().healing();
-                    System.out.println("Joy: Your pokemon is full of HP! Here you go!");
-                    scanner.nextLine();
+                    poke.healing();
+                    win=0;
                     break;
                 }
                 scanner.nextLine();
                 System.out.printf("%s use %s\n",trainer.getPokemonData().getName(),trainer.getPokemonData().getMove());
-                pokemonData.damage(trainer.getPokemonData().getAttack());
-                System.out.printf("%s receive %d damage\n",pokemonData.getName(),trainer.getPokemonData().getAttack());
-                if(pokemonData.getCurrentHP()>0)
+                poke.damage(trainer.getPokemonData().getAttack());
+                System.out.printf("%s receive %d damage\n",poke.getName(),trainer.getPokemonData().getAttack());
+                if(poke.getCurrentHP()>0)
                 {
-                    System.out.printf("%s has %d HP left.\n", pokemonData.getName(), pokemonData.getCurrentHP());
+                    System.out.printf("%s has %d HP left.\n", poke.getName(), poke.getCurrentHP());
                     scanner.nextLine();
                 }
                 else
                 {
-                    System.out.printf("%s fainted.\n",pokemonData.getName());
-                    System.out.printf("You win the battle, and you get %d dollars from %s\n",getMoney(),getName());
-                    trainer.getMoney(getMoney());
+                    System.out.printf("%s fainted.\n",poke.getName());
                     trainer.getPokemonData().attackUp();
                     trainer.getPokemonData().speedUp();
-                    pokemonData.healing();
-                    scanner.nextLine();
+                    poke.healing();
+                    win=1;
                     break;
                 }
             }
         }
+        return win;
+    }
+    @Override
+    public void speak(PokemonTrainer trainer)
+    {
+
+        Scanner scanner=new Scanner(System.in);
+        int win=battle(trainer);
+        if(win==1)
+        {
+            trainer.getMoney(getMoney());
+            System.out.printf("You win the battle, and you get %d dollars from %s\n",getMoney(),getName());
+        }
+        else
+        {
+            trainer.lose();
+            System.out.println("You lose the battle, and all your money as well.");
+            scanner.nextLine();
+
+            System.out.println("Go to pokemon center...\nYou meet Joy, who is a nurse.");
+            System.out.println("Joy: Do you need some help?");
+            trainer.getPokemonData().healing();
+            System.out.println("Joy: Your pokemon is full of HP! Here you go!");
+        }
+        scanner.nextLine();
     }
     //TODO override toString()
     public void getMoney(int award)

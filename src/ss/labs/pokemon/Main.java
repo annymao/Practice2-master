@@ -76,7 +76,7 @@ public class Main {
         System.out.printf("The money you have: $%d\n",morris.getMoney());
         if(morris.getBadges().size()!=0)
         {
-            System.out.println("The badges you get:\n");
+            System.out.println("The badges you get:");
             for (String badge : morris.getBadges())
             {
                 System.out.println(badge);
