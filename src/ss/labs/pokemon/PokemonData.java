@@ -1,5 +1,7 @@
 package ss.labs.pokemon;
 
+import java.util.Scanner;
+
 /**
  * Created by jerry on 2017/3/7.
  */
@@ -42,6 +44,86 @@ public class PokemonData{
         attack=attack+5;
     }
 
+    public int fight(PokemonData trainer)
+    {
+        int win=0;
+        Scanner scanner=new Scanner(System.in);
+        while(trainer.getCurrentHP()>0 && getCurrentHP()>0)
+        {
+            if(trainer.getSpeed()>=getSpeed())
+            {
+                System.out.printf("%s use %s\n",trainer.getName(),trainer.getMove());
+                damage(trainer.getAttack());
+                System.out.printf("%s receive %d damage\n",getName(),trainer.getAttack());
+                if(getCurrentHP()>0)
+                {
+                    System.out.printf("%s has %d HP left.\n", getName(), getCurrentHP());
+                }
+                else
+                {
+                    System.out.printf("%s fainted.\n",getName());
+                    trainer.attackUp();
+                    trainer.speedUp();
+                    healing();
+                    win=1;
+                    break;
+                }
+                scanner.nextLine();
+                System.out.printf("%s use %s\n",getName(),getMove());
+                trainer.damage(getAttack());
+                System.out.printf("%s receive %d damage\n",trainer.getName(),getAttack());
+                if(trainer.getCurrentHP()>0)
+                {
+                    System.out.printf("%s has %d HP left.\n", trainer.getName(), trainer.getCurrentHP());
+                    scanner.nextLine();
+                }
+                else
+                {
+                    System.out.printf("%s fainted.\n",trainer.getName());
+                    healing();
+                    win=0;
+                    break;
+                }
+            }
+            else
+            {
+                System.out.printf("%s use %s\n",getName(),getMove());
+                trainer.damage(getAttack());
+                System.out.printf("%s receive %d damage\n",trainer.getName(),getAttack());
+                if(trainer.getCurrentHP()>0)
+                {
+                    System.out.printf("%s has %d HP left.\n", trainer.getName(), trainer.getCurrentHP());
+
+                }
+                else
+                {
+                    System.out.printf("%s fainted.\n",trainer.getName());
+                    healing();
+                    win=0;
+                    break;
+                }
+                scanner.nextLine();
+                System.out.printf("%s use %s\n",trainer.getName(),trainer.getMove());
+                damage(trainer.getAttack());
+                System.out.printf("%s receive %d damage\n",getName(),trainer.getAttack());
+                if(getCurrentHP()>0)
+                {
+                    System.out.printf("%s has %d HP left.\n", getName(), getCurrentHP());
+                    scanner.nextLine();
+                }
+                else
+                {
+                    System.out.printf("%s fainted.\n",getName());
+                    trainer.attackUp();
+                    trainer.speedUp();
+                    healing();
+                    win=1;
+                    break;
+                }
+            }
+        }
+        return win;
+    }
     public void healing()
     {
         currentHP=maxHP;
