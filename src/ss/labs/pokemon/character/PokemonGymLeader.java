@@ -9,54 +9,59 @@ import java.util.Scanner;
 /**
  * Created by anny on 2017/3/10.
  */
-public class PokemonGymLeader extends PokemonTrainer{
+public class PokemonGymLeader extends NPC {
     protected ArrayList<PokemonData> pokemonList;
     protected String badge;
     protected int visited;
 
-    public PokemonGymLeader(String name, String job, String quote, ArrayList<PokemonData> data, String badge,int visited)
-    {
+    public PokemonGymLeader(String name, String job, String quote, ArrayList<PokemonData> data, String badge, int visited) {
 
-        super(name,job,quote);
-        pokemonList=data;
-        this.badge=badge;
-        this.visited=visited;
+        super(name, job, quote);
+        pokemonList = data;
+        this.badge = badge;
+        this.visited = visited;
     }
 
-    public PokemonData getPokemonData()
-    {
-        Random random=new Random();
+    public int battle(Player trainer) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(name + ": " + quote);
+        scanner.nextLine();
+        System.out.println("The Battle Start!");
+        PokemonData poke = getPokemonData();
+        System.out.println(getName() + ": GO! " + poke.getName() + "!");
+
+        return poke.fight(trainer.getPokemonData());
+    }
+
+    public PokemonData getPokemonData() {
+        Random random = new Random();
         return pokemonList.get(random.nextInt(pokemonList.size()));
     }
-    public String getBadge()
-    {
+
+    public String getBadge() {
         return badge;
     }
-    public void getVisited(int i)
-    {
-        visited=i;
+
+    public void getVisited(int i) {
+        visited = i;
     }
-    public int getVisited()
-    {
+
+    public int getVisited() {
         return visited;
     }
+
     @Override
-    public void speak(PokemonTrainer trainer)
-    {
-        Scanner scanner=new Scanner(System.in);
-        if(getVisited()==0)
-        {
-            int win=battle(trainer);
-            if(win==1)
-            {
+    public void speak(Player trainer) {
+        Scanner scanner = new Scanner(System.in);
+        if (getVisited() == 0) {
+            int win = battle(trainer);
+            if (win == 1) {
                 giveBadge();
                 trainer.putBadges(getBadge());
                 System.out.println(trainer.getName() + ": Thank you!");
                 getVisited(1);
                 scanner.nextLine();
-            }
-            else
-            {
+            } else {
                 win();
                 scanner.nextLine();
 
@@ -66,37 +71,34 @@ public class PokemonGymLeader extends PokemonTrainer{
                 System.out.println("Joy: Your pokemon is full of HP! Here you go!");
                 scanner.nextLine();
             }
-        }
-        else
-        {
-            System.out.println(name+": Well... I think you had get the badge already!");
+        } else {
+            System.out.println(name + ": Well... I think you had got the badge already!");
             scanner.nextLine();
         }
     }
-    public void giveBadge()
-    {
-        System.out.println(name+": Here is the badge, good luck!");
+
+    public void giveBadge() {
+        System.out.println(name + ": Here is the badge, good luck!");
     }
-    public  void win()
-    {
-        System.out.println(name+": If you keep training without giving up, I'm sure we'll see each other again.");
+
+    public void win() {
+        System.out.println(name + ": If you keep training without giving up, I'm sure we'll see each other again.");
     }
+
     @Override
-    public String toString()
-    {
-        return "name: "+name+"\n"+"job: "+job+"\n";
+    public String toString() {
+        return "name: " + name + "\n" + "job: " + job + "\n";
     }
+
     @Override
-    public void showInformation()
-    {
+    public void showInformation() {
         super.showInformation();
         System.out.println("Pokemon data:");
-        for(PokemonData pokemonData : pokemonList)
-        {
-            System.out.println("  id: "+pokemonData.getId()+"\n"
-                    +"  name: "+pokemonData.getName()+"\n"
-                    +"  type: "+pokemonData.getType()+"\n"
-                    +"  move: "+pokemonData.getMove()+"\n");
+        for (PokemonData pokemonData : pokemonList) {
+            System.out.println("  id: " + pokemonData.getId() + "\n"
+                    + "  name: " + pokemonData.getName() + "\n"
+                    + "  type: " + pokemonData.getType() + "\n"
+                    + "  move: " + pokemonData.getMove() + "\n");
         }
     }
 }

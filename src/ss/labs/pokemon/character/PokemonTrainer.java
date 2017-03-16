@@ -11,27 +11,12 @@ import java.util.ArrayList;
  */
 public class PokemonTrainer extends NPC{
     protected PokemonData pokemonData;
-    protected int money;
-    protected ArrayList<String> badges;
-    //TODO solve the error
-    public PokemonTrainer(String name, String job, String quote)
+    public PokemonTrainer(String name, String job, String quote, PokemonData data)
     {
-
-        //TODO call super constructor
         super(name,job,quote);
-        //TODO assign attributes
-    }
-    public PokemonTrainer(String name, String job, String quote, PokemonData data, int money)
-    {
-
-        //TODO call super constructor
-        super(name,job,quote);
-        //TODO assign attributes
         pokemonData=data;
-        this.money=money;
-        badges=new ArrayList<String>();
     }
-    public int battle(PokemonTrainer trainer)
+    public int battle(Player trainer)
     {
         Scanner scanner=new Scanner(System.in);
         System.out.println(name+": "+quote);
@@ -43,15 +28,15 @@ public class PokemonTrainer extends NPC{
         return poke.fight(trainer.getPokemonData());
     }
     @Override
-    public void speak(PokemonTrainer trainer)
+    public void speak(Player trainer)
     {
 
         Scanner scanner=new Scanner(System.in);
         int win=battle(trainer);
         if(win==1)
         {
-            trainer.getMoney(getMoney());
-            System.out.printf("You win the battle, and you get %d dollars from %s\n",getMoney(),getName());
+            trainer.getMoney(10);
+            System.out.printf("You win the battle, and you get %d dollars from %s\n",10,getName());
         }
         else
         {
@@ -67,29 +52,9 @@ public class PokemonTrainer extends NPC{
         scanner.nextLine();
     }
     //TODO override toString()
-    public void getMoney(int award)
-    {
-        money=money+award;
-    }
-    public int getMoney()
-    {
-        return money;
-    }
     public PokemonData getPokemonData()
     {
         return pokemonData;
-    }
-    public ArrayList<String> getBadges()
-    {
-        return badges;
-    }
-    public void putBadges(String badge)
-    {
-        badges.add(badge);
-    }
-    public void lose()
-    {
-        money=0;
     }
     @Override
     public String toString()
